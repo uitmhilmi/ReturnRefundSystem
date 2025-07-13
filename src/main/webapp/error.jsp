@@ -168,7 +168,7 @@
             String errorCode = request.getParameter("code");
             String errorMessage = (String) request.getAttribute("errorMessage");
             String errorDetails = (String) request.getAttribute("errorDetails");
-            Exception exception = (Exception) request.getAttribute("exception");
+            exception = (Exception) request.getAttribute("exception");
             
             // Default error handling
             if (errorCode == null) errorCode = "500";

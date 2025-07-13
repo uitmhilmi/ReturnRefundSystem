@@ -12,6 +12,7 @@ public class ReturnRequest {
     private int productId;
     private String reason;
     private String status;
+    private String returnType;
     private Timestamp createdAt;
     
     // Additional fields for display
@@ -44,6 +45,9 @@ public class ReturnRequest {
     
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    
+    public String getReturnType() { return returnType; }
+    public void setReturnType(String returnType) { this.returnType = returnType; }
     
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }

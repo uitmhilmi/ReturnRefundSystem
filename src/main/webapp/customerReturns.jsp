@@ -105,7 +105,8 @@
             font-weight: bold;
             color: #333;
         }
-        .filter-group select, .filter-group input {
+        .filter-group select,
+        .filter-group input {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
@@ -274,13 +275,13 @@
             <a href="LogoutServlet">Logout</a>
         </div>
     </div>
-    
+
     <div class="container">
         <div class="page-header">
             <h2>My Return History</h2>
             <a href="returnForm.jsp" class="btn btn-primary">Submit New Return</a>
         </div>
-        
+
         <!-- Filter Section -->
         <div class="filter-section">
             <form method="get" action="customerReturns.jsp">
@@ -309,7 +310,7 @@
                 </div>
             </form>
         </div>
-        
+
         <!-- Returns Section -->
         <div class="returns-section">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -319,7 +320,7 @@
                     <button onclick="toggleView('table')" id="tableBtn">Table</button>
                 </div>
             </div>
-            
+
             <c:choose>
                 <c:when test="${empty returnRequests}">
                     <div class="empty-state">
@@ -339,7 +340,7 @@
                                         <fmt:formatDate value="${request.createdAt}" pattern="MMM dd, yyyy" />
                                     </div>
                                 </div>
-                                
+
                                 <div class="return-details">
                                     <div class="detail-item">
                                         <div class="detail-label">Product</div>
@@ -353,21 +354,13 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="detail-item">
-                                        <div class="detail-label">Return Type</div>
-                                        <div class="detail-value">${request.returnType}</div>
-                                    </div>
-                                    <div class="detail-item">
-                                        <div class="detail-label">Condition</div>
-                                        <div class="detail-value">${request.condition}</div>
-                                    </div>
                                 </div>
-                                
+
                                 <div class="return-reason">
                                     <h4>Reason for Return</h4>
                                     <p>${request.reason}</p>
                                 </div>
-                                
+
                                 <div class="return-actions">
                                     <button class="btn btn-secondary btn-sm" onclick="viewDetails(${request.requestId})">View Details</button>
                                     <c:if test="${request.status == 'Pending'}">
@@ -380,7 +373,7 @@
                             </div>
                         </c:forEach>
                     </div>
-                    
+
                     <!-- Table View -->
                     <div id="tableView" style="display: none;">
                         <table class="table">
@@ -389,7 +382,6 @@
                                     <th>Request ID</th>
                                     <th>Product</th>
                                     <th>Status</th>
-                                    <th>Return Type</th>
                                     <th>Date</th>
                                     <th>Actions</th>
                                 </tr>
@@ -404,7 +396,6 @@
                                                 ${request.status}
                                             </span>
                                         </td>
-                                        <td>${request.returnType}</td>
                                         <td>
                                             <fmt:formatDate value="${request.createdAt}" pattern="MMM dd, yyyy" />
                                         </td>
@@ -423,14 +414,14 @@
             </c:choose>
         </div>
     </div>
-    
+
     <script>
         function toggleView(view) {
             const cardsView = document.getElementById('cardsView');
             const tableView = document.getElementById('tableView');
             const cardsBtn = document.getElementById('cardsBtn');
             const tableBtn = document.getElementById('tableBtn');
-            
+
             if (view === 'cards') {
                 cardsView.style.display = 'grid';
                 tableView.style.display = 'none';
@@ -443,17 +434,17 @@
                 tableBtn.classList.add('active');
             }
         }
-        
+
         function viewDetails(requestId) {
             window.location.href = 'ViewRequestServlet?requestId=' + requestId;
         }
-        
+
         function cancelRequest(requestId) {
             if (confirm('Are you sure you want to cancel this return request?')) {
                 window.location.href = 'CancelRequestServlet?requestId=' + requestId;
             }
         }
-        
+
         function trackRefund(requestId) {
             window.location.href = 'TrackRefundServlet?requestId=' + requestId;
         }
