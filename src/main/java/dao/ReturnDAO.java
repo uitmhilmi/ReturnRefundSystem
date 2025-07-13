@@ -12,44 +12,44 @@ import java.util.List;
 
 public class ReturnDAO {
     
-    public boolean insertReturnRequest(ReturnRequest returnRequest) {
-        String sql = "INSERT INTO ReturnRequests (user_id, product_id, reason, status) VALUES (?, ?, ?, ?)";
-        
+    public boolean createReturnRequest(ReturnRequest request) {
+        String query = "INSERT INTO returnrequests (user_id, product_id, reason, status) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            stmt.setInt(1, returnRequest.getUserId());
-            stmt.setInt(2, returnRequest.getProductId());
-            stmt.setString(3, returnRequest.getReason());
-            stmt.setString(4, returnRequest.getStatus());
+            stmt.setInt(1, request.getUserId());
+            stmt.setInt(2, request.getProductId());
+            stmt.setString(3, request.getReason());
+            stmt.setString(4, request.getStatus());
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
     
     public List<ReturnRequest> getReturnRequestsByUserId(int userId) {
         List<ReturnRequest> requests = new ArrayList<>();
-        String sql = "SELECT rr.*, p.name as product_name FROM ReturnRequests rr " +
-                    "JOIN Products p ON rr.product_id = p.product_id " +
-                    "WHERE rr.user_id = ? ORDER BY rr.created_at DESC";
+        String query = "SELECT r.*, u.full_name as user_name, p.name as product_name " +
+                      "FROM returnrequests r " +
+                      "JOIN users u ON r.user_id = u.user_id " +
+                      "JOIN products p ON r.product_id = p.product_id " +
+                      "WHERE r.user_id = ? ORDER BY r.created_at DESC";
         
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
-                ReturnRequest request = new ReturnRequest();
-                request.setRequestId(rs.getInt("request_id"));
-                request.setUserId(rs.getInt("user_id"));
-                request.setProductId(rs.getInt("product_id"));
-                request.setReason(rs.getString("reason"));
-                request.setStatus(rs.getString("status"));
-                request.setCreatedAt(rs.getTimestamp("created_at"));
+                ReturnRequest request = new ReturnRequest(
+                    rs.getInt("user_id"),
+                    rs.getInt("product_id"),
+                    rs.getString("reason")
+                );
+                request.setUserName(rs.getString("user_name"));
                 request.setProductName(rs.getString("product_name"));
                 requests.add(request);
             }
@@ -61,24 +61,23 @@ public class ReturnDAO {
     
     public List<ReturnRequest> getAllReturnRequests() {
         List<ReturnRequest> requests = new ArrayList<>();
-        String sql = "SELECT rr.*, u.full_name as user_name, p.name as product_name " +
-                    "FROM ReturnRequests rr " +
-                    "JOIN Users u ON rr.user_id = u.user_id " +
-                    "JOIN Products p ON rr.product_id = p.product_id " +
-                    "ORDER BY rr.created_at DESC";
+        String query = "SELECT r.*, u.full_name as user_name, p.name as product_name " +
+                      "FROM returnrequests r " +
+                      "JOIN users u ON r.user_id = u.user_id " +
+                      "JOIN products p ON r.product_id = p.product_id " +
+                      "ORDER BY r.created_at DESC";
         
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
-                ReturnRequest request = new ReturnRequest();
-                request.setRequestId(rs.getInt("request_id"));
-                request.setUserId(rs.getInt("user_id"));
-                request.setProductId(rs.getInt("product_id"));
-                request.setReason(rs.getString("reason"));
-                request.setStatus(rs.getString("status"));
-                request.setCreatedAt(rs.getTimestamp("created_at"));
+                ReturnRequest request = new ReturnRequest(
+                    rs.getInt("user_id"),
+                    rs.getInt("product_id"),
+                    rs.getString("reason")
+                );
                 request.setUserName(rs.getString("user_name"));
                 request.setProductName(rs.getString("product_name"));
                 requests.add(request);
@@ -89,11 +88,10 @@ public class ReturnDAO {
         return requests;
     }
     
-    public boolean updateReturnRequestStatus(int requestId, String status) {
-        String sql = "UPDATE ReturnRequests SET status = ? WHERE request_id = ?";
-        
+    public boolean updateReturnStatus(int requestId, String status) {
+        String query = "UPDATE returnrequests SET status = ? WHERE request_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             
             stmt.setString(1, status);
             stmt.setInt(2, requestId);
@@ -101,31 +99,29 @@ public class ReturnDAO {
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
     
     public ReturnRequest getReturnRequestById(int requestId) {
-        String sql = "SELECT rr.*, u.full_name as user_name, p.name as product_name, p.price " +
-                    "FROM ReturnRequests rr " +
-                    "JOIN Users u ON rr.user_id = u.user_id " +
-                    "JOIN Products p ON rr.product_id = p.product_id " +
-                    "WHERE rr.request_id = ?";
+        String query = "SELECT r.*, u.full_name as user_name, p.name as product_name " +
+                      "FROM returnrequests r " +
+                      "JOIN users u ON r.user_id = u.user_id " +
+                      "JOIN products p ON r.product_id = p.product_id " +
+                      "WHERE r.request_id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             
             stmt.setInt(1, requestId);
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                ReturnRequest request = new ReturnRequest();
-                request.setRequestId(rs.getInt("request_id"));
-                request.setUserId(rs.getInt("user_id"));
-                request.setProductId(rs.getInt("product_id"));
-                request.setReason(rs.getString("reason"));
-                request.setStatus(rs.getString("status"));
-                request.setCreatedAt(rs.getTimestamp("created_at"));
+                ReturnRequest request = new ReturnRequest(
+                    rs.getInt("user_id"),
+                    rs.getInt("product_id"),
+                    rs.getString("reason")
+                );
                 request.setUserName(rs.getString("user_name"));
                 request.setProductName(rs.getString("product_name"));
                 return request;
@@ -136,28 +132,79 @@ public class ReturnDAO {
         return null;
     }
     
-    public int[] getReturnStatistics() {
-        int[] stats = new int[4]; // [total, pending, approved, rejected]
-        String sql = "SELECT " +
-                    "COUNT(*) as total, " +
-                    "SUM(CASE WHEN status = 'Pending' THEN 1 ELSE 0 END) as pending, " +
-                    "SUM(CASE WHEN status = 'Approved' THEN 1 ELSE 0 END) as approved, " +
-                    "SUM(CASE WHEN status = 'Rejected' THEN 1 ELSE 0 END) as rejected " +
-                    "FROM ReturnRequests";
-        
+    public int getReturnCountByStatus(String status) {
+        String query = "SELECT COUNT(*) FROM returnrequests WHERE status = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, status);
+            ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                stats[0] = rs.getInt("total");
-                stats[1] = rs.getInt("pending");
-                stats[2] = rs.getInt("approved");
-                stats[3] = rs.getInt("rejected");
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return stats;
+        return 0;
+    }
+    
+    public int getTotalReturnRequests() {
+        String query = "SELECT COUNT(*) FROM returnrequests";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public List<ReturnRequest> getLatestReturnRequests(int limit) {
+        List<ReturnRequest> requests = new ArrayList<>();
+        String query = "SELECT r.*, u.full_name as user_name, p.name as product_name " +
+                      "FROM returnrequests r " +
+                      "JOIN users u ON r.user_id = u.user_id " +
+                      "JOIN products p ON r.product_id = p.product_id " +
+                      "ORDER BY r.created_at DESC LIMIT ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setInt(1, limit);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                ReturnRequest request = new ReturnRequest(
+                    rs.getInt("user_id"),
+                    rs.getInt("product_id"),
+                    rs.getString("reason")
+                );
+                request.setUserName(rs.getString("user_name"));
+                request.setProductName(rs.getString("product_name"));
+                requests.add(request);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
+    
+    public boolean deleteReturnRequest(int requestId) {
+        String query = "DELETE FROM returnrequests WHERE request_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setInt(1, requestId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

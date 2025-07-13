@@ -85,7 +85,7 @@ public class ReturnServlet extends HttpServlet {
             returnRequest.setStatus("Pending");
             returnRequest.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             
-            boolean submitted = returnDAO.insertReturnRequest(returnRequest);
+            boolean submitted = returnDAO.createReturnRequest(returnRequest);
             
             if (submitted) {
                 request.setAttribute("successMessage", "Return request submitted successfully!");

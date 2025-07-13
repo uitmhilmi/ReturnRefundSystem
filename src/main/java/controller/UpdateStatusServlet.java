@@ -58,7 +58,7 @@ public class UpdateStatusServlet extends HttpServlet {
         try {
             int requestId = Integer.parseInt(requestIdStr);
             
-            boolean updated = returnDAO.updateReturnRequestStatus(requestId, newStatus);
+            boolean updated = returnDAO.updateReturnStatus(requestId, newStatus);
             
             if (updated) {
                 request.setAttribute("successMessage", "Return request status updated successfully!");
