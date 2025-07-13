@@ -166,7 +166,6 @@
     <div class="header">
         <h1>Admin Dashboard</h1>
         <div class="user-info">
-            <span>Welcome, <%= session.getAttribute("username") %></span>
             <a href="LogoutServlet" class="logout-btn">Logout</a>
         </div>
     </div>
