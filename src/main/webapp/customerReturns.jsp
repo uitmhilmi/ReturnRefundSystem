@@ -84,6 +84,18 @@
             padding: 6px 12px;
             font-size: 12px;
         }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
         .filter-section {
             background: white;
             padding: 1.5rem;
@@ -271,8 +283,7 @@
     <div class="header">
         <h1>My Return Requests</h1>
         <div class="nav-links">
-            <a href="returnForm.jsp">New Return</a>
-            <a href="LogoutServlet">Logout</a>
+            <a href="LogoutServlet" class="logout-btn">Logout</a>
         </div>
     </div>
 
@@ -284,7 +295,7 @@
 
         <!-- Filter Section -->
         <div class="filter-section">
-            <form method="get" action="customerReturns.jsp">
+            <form method="get" action="CustomerReturnsServlet">
                 <div class="filter-row">
                     <div class="filter-group">
                         <label for="statusFilter">Status</label>
@@ -362,14 +373,24 @@
                                 </div>
 
                                 <div class="return-actions">
-                                    <button class="btn btn-secondary btn-sm" onclick="viewDetails(${request.requestId})">View Details</button>
-                                    <c:if test="${request.status == 'Pending'}">
-                                        <button class="btn btn-secondary btn-sm" onclick="cancelRequest(${request.requestId})">Cancel Request</button>
-                                    </c:if>
-                                    <c:if test="${request.status == 'Approved'}">
-                                        <button class="btn btn-primary btn-sm" onclick="trackRefund(${request.requestId})">Track Refund</button>
-                                    </c:if>
+                                        <button class="btn btn-secondary btn-sm" onclick="viewDetails(${request.requestId})">View Details</button>
+
+                                        <c:if test="${request.status == 'Pending'}">
+                                            <form method="post" action="CustomerReturnsServlet" style="display:inline;">
+                                                <input type="hidden" name="requestId" value="${request.requestId}" />
+                                                <input type="hidden" name="action" value="delete" />
+                                                <button type="submit" class="btn btn-secondary btn-sm"
+                                                        onclick="return confirm('Are you sure you want to cancel this request?');">
+                                                    Cancel Request
+                                                </button>
+                                            </form>
+                                        </c:if>
+
+                                        <c:if test="${request.status == 'Approved'}">
+                                            <button class="btn btn-primary btn-sm" onclick="trackRefund(${request.requestId})">Track Refund</button>
+                                        </c:if>
                                 </div>
+
                             </div>
                         </c:forEach>
                     </div>
@@ -437,12 +458,6 @@
 
         function viewDetails(requestId) {
             window.location.href = 'ViewRequestServlet?requestId=' + requestId;
-        }
-
-        function cancelRequest(requestId) {
-            if (confirm('Are you sure you want to cancel this return request?')) {
-                window.location.href = 'CancelRequestServlet?requestId=' + requestId;
-            }
         }
 
         function trackRefund(requestId) {

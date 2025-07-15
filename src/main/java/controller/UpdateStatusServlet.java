@@ -66,7 +66,7 @@ public class UpdateStatusServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Failed to update return request status");
             }
             
-            response.sendRedirect("dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/dashboard");
             
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Invalid request ID");

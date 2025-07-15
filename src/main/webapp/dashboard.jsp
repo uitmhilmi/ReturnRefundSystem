@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -194,8 +196,6 @@
         <!-- Quick Actions -->
         <div class="quick-actions">
             <a href="returnForm.jsp" class="quick-action-btn">New Return Request</a>
-            <a href="AllReturnsServlet" class="quick-action-btn">View All Returns</a>
-            <a href="RefundServlet" class="quick-action-btn">Process Refunds</a>
         </div>
         
         <!-- Recent Return Requests -->
@@ -222,7 +222,7 @@
                             <c:forEach var="request" items="${recentRequests}">
                                 <tr>
                                     <td>${request.requestId}</td>
-                                    <td>${request.customerName}</td>
+                                    <td>${request.userName}</td>
                                     <td>${request.productName}</td>
                                     <td>${request.reason}</td>
                                     <td>
@@ -234,17 +234,18 @@
                                     <td>
                                         <c:if test="${request.status == 'Pending'}">
                                             <form style="display: inline;" action="UpdateStatusServlet" method="post">
+                                                <input type="hidden" name="action" value="updateStatus">
                                                 <input type="hidden" name="requestId" value="${request.requestId}">
                                                 <input type="hidden" name="status" value="Approved">
                                                 <button type="submit" class="action-btn btn-approve">Approve</button>
                                             </form>
                                             <form style="display: inline;" action="UpdateStatusServlet" method="post">
+                                                <input type="hidden" name="action" value="updateStatus">
                                                 <input type="hidden" name="requestId" value="${request.requestId}">
                                                 <input type="hidden" name="status" value="Rejected">
                                                 <button type="submit" class="action-btn btn-reject">Reject</button>
                                             </form>
                                         </c:if>
-                                        <button class="action-btn btn-view" onclick="viewDetails(${request.requestId})">View</button>
                                     </td>
                                 </tr>
                             </c:forEach>
