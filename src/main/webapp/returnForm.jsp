@@ -167,7 +167,7 @@
                     <a href="dashboard.jsp">Dashboard</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="customerReturns.jsp">My Returns</a>
+                    <a href="customerReturns">My Returns</a>
                 </c:otherwise>
             </c:choose>
             <a href="LogoutServlet">Logout</a>
@@ -200,7 +200,7 @@
                 </div>
             <% } %>
             
-            <form action="ReturnServlet" method="post" onsubmit="return validateForm()">
+            <form action="returnForm" method="post" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label for="product">Product <span class="required">*</span></label>
                     <select id="product" name="productId" required>

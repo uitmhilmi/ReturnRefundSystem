@@ -110,7 +110,7 @@
     <!-- Return Management Mappings -->
     <servlet-mapping>
         <servlet-name>ReturnServlet</servlet-name>
-        <url-pattern>/return</url-pattern>
+        <url-pattern>/returnForm</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
@@ -184,41 +184,6 @@
             <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>-->
-
-<!--    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Customer Pages</web-resource-name>
-            <url-pattern>/return</url-pattern>
-            <url-pattern>/returnForm.jsp</url-pattern>
-            <url-pattern>/customerReturns</url-pattern>
-            <url-pattern>/customerReturns.jsp</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>customer</role-name>
-            <role-name>admin</role-name>
-        </auth-constraint>
-    </security-constraint>-->
-
-
-    <!-- Login Configuration -->
-<!--    <login-config>
-        <auth-method>FORM</auth-method>
-        <form-login-config>
-            <form-login-page>/login.jsp</form-login-page>
-            <form-error-page>/login.jsp?error=true</form-error-page>
-        </form-login-config>
-    </login-config>-->
-
-    <!-- Security Roles -->
-<!--    <security-role>
-        <role-name>admin</role-name>
-    </security-role>
-    
-    <security-role>
-        <role-name>customer</role-name>
-    </security-role>-->
 
 <!--     Filters for Security and Logging -->
     <filter>

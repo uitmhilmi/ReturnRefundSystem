@@ -290,36 +290,7 @@
     <div class="container">
         <div class="page-header">
             <h2>My Return History</h2>
-            <a href="returnForm.jsp" class="btn btn-primary">Submit New Return</a>
-        </div>
-
-        <!-- Filter Section -->
-        <div class="filter-section">
-            <form method="get" action="CustomerReturnsServlet">
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label for="statusFilter">Status</label>
-                        <select id="statusFilter" name="status">
-                            <option value="">All Statuses</option>
-                            <option value="Pending" ${param.status == 'Pending' ? 'selected' : ''}>Pending</option>
-                            <option value="Approved" ${param.status == 'Approved' ? 'selected' : ''}>Approved</option>
-                            <option value="Rejected" ${param.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="dateFrom">From Date</label>
-                        <input type="date" id="dateFrom" name="dateFrom" value="${param.dateFrom}">
-                    </div>
-                    <div class="filter-group">
-                        <label for="dateTo">To Date</label>
-                        <input type="date" id="dateTo" name="dateTo" value="${param.dateTo}">
-                    </div>
-                    <div class="filter-group">
-                        <label>&nbsp;</label>
-                        <button type="submit" class="btn btn-primary">Filter</button>
-                    </div>
-                </div>
-            </form>
+            <a href="returnForm" class="btn btn-primary">Submit New Return</a>
         </div>
 
         <!-- Returns Section -->
@@ -373,7 +344,6 @@
                                 </div>
 
                                 <div class="return-actions">
-                                        <button class="btn btn-secondary btn-sm" onclick="viewDetails(${request.requestId})">View Details</button>
 
                                         <c:if test="${request.status == 'Pending'}">
                                             <form method="post" action="CustomerReturnsServlet" style="display:inline;">
@@ -421,7 +391,6 @@
                                             <fmt:formatDate value="${request.createdAt}" pattern="MMM dd, yyyy" />
                                         </td>
                                         <td>
-                                            <button class="btn btn-secondary btn-sm" onclick="viewDetails(${request.requestId})">View</button>
                                             <c:if test="${request.status == 'Pending'}">
                                                 <button class="btn btn-secondary btn-sm" onclick="cancelRequest(${request.requestId})">Cancel</button>
                                             </c:if>
@@ -454,10 +423,6 @@
                 cardsBtn.classList.remove('active');
                 tableBtn.classList.add('active');
             }
-        }
-
-        function viewDetails(requestId) {
-            window.location.href = 'ViewRequestServlet?requestId=' + requestId;
         }
 
         function trackRefund(requestId) {

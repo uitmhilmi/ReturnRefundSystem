@@ -13,7 +13,7 @@ public class ProductDAO {
     
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products ORDER BY name";
+        String sql = "SELECT * FROM products ORDER BY name";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -26,6 +26,7 @@ public class ProductDAO {
                 product.setDescription(rs.getString("description"));
                 product.setPrice(rs.getBigDecimal("price"));
                 products.add(product);
+                System.out.println("Product loaded: " + product.getName());
             }
         } catch (SQLException e) {
             e.printStackTrace();

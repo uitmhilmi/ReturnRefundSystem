@@ -193,11 +193,6 @@
             </div>
         </div>
         
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <a href="returnForm.jsp" class="quick-action-btn">New Return Request</a>
-        </div>
-        
         <!-- Recent Return Requests -->
         <div class="section">
             <h2>Recent Return Requests</h2>

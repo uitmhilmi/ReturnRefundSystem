@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dao.ReturnDAO;
 import dao.ProductDAO;
+import java.util.List;
 import model.ReturnRequest;
+import model.Product;
 import model.User;
 
 @WebServlet("/ReturnServlet")
@@ -37,7 +39,9 @@ public class ReturnServlet extends HttpServlet {
 
         try {
             // Load products for dropdown
-            request.setAttribute("products", productDAO.getAllProducts());
+            List<Product> product = productDAO.getAllProducts();
+            
+            request.setAttribute("products", product);
             request.getRequestDispatcher("returnForm.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +92,7 @@ public class ReturnServlet extends HttpServlet {
             boolean submitted = returnDAO.createReturnRequest(returnRequest);
 
             if (submitted) {
-                response.sendRedirect("customerReturns.jsp");
+                response.sendRedirect("customerReturns");
             } else {
                 request.setAttribute("errorMessage", "Failed to submit return request");
                 request.setAttribute("products", productDAO.getAllProducts());
