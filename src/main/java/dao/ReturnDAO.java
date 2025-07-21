@@ -201,7 +201,7 @@ public class ReturnDAO {
     }
 
     public boolean deleteReturnRequest(int requestId) throws SQLException {
-        String sql = "DELETE FROM return_requests WHERE request_id = ?";
+        String sql = "DELETE FROM returnrequests WHERE request_id = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, requestId);

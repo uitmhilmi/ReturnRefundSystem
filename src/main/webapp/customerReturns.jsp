@@ -346,7 +346,7 @@
                                 <div class="return-actions">
 
                                         <c:if test="${request.status == 'Pending'}">
-                                            <form method="post" action="CustomerReturnsServlet" style="display:inline;">
+                                            <form method="post" action="customerReturns" style="display:inline;">
                                                 <input type="hidden" name="requestId" value="${request.requestId}" />
                                                 <input type="hidden" name="action" value="delete" />
                                                 <button type="submit" class="btn btn-secondary btn-sm"
