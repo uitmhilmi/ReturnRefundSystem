@@ -10,9 +10,9 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     
-    private static final String URL = "jdbc:mysql://localhost:3306/return_refund_system";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = ""; // Update with your MySQL password
+    private static final String URL = "jdbc:mysql://localhost:3307/return_refund_system";
+    private static final String USERNAME = "appuser";
+    private static final String PASSWORD = "";
     
     static {
         try {
