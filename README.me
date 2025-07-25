@@ -52,7 +52,7 @@ ReturnRefundSystem/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/return-refund-system.git
+git clone https://github.com/uitmhilmi/return-refund-system.git
 cd return-refund-system
 ```
 
@@ -65,13 +65,13 @@ Open the project in your IDE (e.g., NetBeans):
 
 ### 3. Setup the Database
 
-- Create a database (e.g., `return_refund_db`)
+- Create a database (e.g., `return_refund_system`)
 - Run the provided SQL script (if available) to create tables
 - Update your DB credentials in your DAO or `DatabaseConnection.java`
 
 ```java
-String jdbcURL = "jdbc:mysql://localhost:3306/return_refund_db";
-String dbUser = "root";
+String jdbcURL = "jdbc:mysql://localhost:3307/return_refund_system";
+String dbUser = "appuser";
 String dbPassword = "";
 ```
 
@@ -80,19 +80,14 @@ String dbPassword = "";
 - Right-click the project > Run
 - Access the app in your browser:
   ```
-  http://localhost:8080/ReturnRefundSystem/
+  http://localhost:8080/ReturnRefundSystem-1.0/
   ```
 
 ## 👤 Sample Accounts
 
-You can create sample users via SQL or registration form (if implemented).
+You can create sample users via registration form
 
 ## 📸 Screenshots
-
-> Add screenshots here of:
-> - Return History page
-> - Return Form
-> - Filter & View Toggle
 
 ## 🧩 Future Enhancements
 
@@ -101,9 +96,5 @@ You can create sample users via SQL or registration form (if implemented).
 - File/image upload for return evidence
 - Pagination and search
 
-## 📄 License
 
-MIT License (or specify your own)
-
----
 
